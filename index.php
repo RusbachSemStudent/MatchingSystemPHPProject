@@ -14,14 +14,6 @@ if ($conn->connect_error) {
 
 echo "Connected successfully!";
 
-/*$sql = "INSERT INTO registrations (registrationID, firstName, lastName, email, region, industry, jobPosition, desiredSalary) VALUES (1, 'Testnaam', 'Testachternaam', 'test@test.com', 'Europe', 'IT', 'Software Developer', 50000)";
-
-if ($conn->query($sql) === TRUE) {
-    echo "New record created successfully!";
-} else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
-}
-*/
 ?>
 <p>Registration Form:</p>
 <form method="post">
@@ -38,7 +30,7 @@ if ($conn->query($sql) === TRUE) {
     <label for="jobPosition">Job Position: </label><br>
     <input type="text" name="jobPosition"><br>
     <label for="desiredSalary">Desired Salary: </label><br>
-    <input type="text" name="desiredSalary"><br>
+    <input type="number" name="desiredSalary"><br>
     <input type="submit" value="Submit">
 </form>
 
@@ -49,6 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($requiredFormFields as $field) {
         if (empty($_POST[$field])) {
             echo "Field $field is not filled in!";
+            return;
+        } else if ($field == "desiredSalary" && !ctype_digit($_POST[$field])) {
+            echo "Field $field is not filled in properly!";
             return;
         }
     }
